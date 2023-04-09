@@ -1,0 +1,38 @@
+version: "2"
+services:
+  Calculator:
+    build: ./CalculatorMS
+    image: s222574652/calculator_ms
+    env_file: ./CalculatorMS/.env
+    command: node .
+    ports:
+      - "3001:4000"
+    volumes:
+      - .:/usr/app/
+      - /usr/app/node_modules
+    networks:
+      front-tier:
+        ipv4_address: 192.168.10.5
+   
+  Auth:
+    build: ./AuthMS
+    image: s222574652/auth_ms
+    env_file: ./AuthMS/.env
+    command: node .
+    ports:
+      - "3002:4000"
+    volumes:
+      - .:/usr/app/
+      - /usr/app/node_modules
+    networks:
+      front-tier:
+        ipv4_address: 192.168.10.10
+
+
+networks:
+  front-tier:
+    ipam:
+      driver: default
+      config:
+        - subnet: "192.168.10.0/24"
+        
